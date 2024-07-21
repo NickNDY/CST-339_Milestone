@@ -1,6 +1,7 @@
 package com.gcu;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,8 +14,10 @@ public class HomeController {
 	 * @return Directs to the index.html page
 	 */
 	@GetMapping("")
-	public String getIndex()
+	public String getIndex(Model model)
 	{
+		model.addAttribute("title", "Home Page");
+		
 		return "index";
 	}
 }

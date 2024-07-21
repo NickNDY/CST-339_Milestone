@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("")
 public class HomeController {
 
+	/**
+	 * Root function accessed at "{address}"
+	 * @return Directs to the index.html page
+	 */
 	@GetMapping("")
 	public String getIndex()
 	{

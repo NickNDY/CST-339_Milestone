@@ -17,7 +17,6 @@ public class HomeController {
 	public String getIndex(Model model)
 	{
 		model.addAttribute("title", "Home Page");
-		model.addAttribute("username", null);
 		
 		return "index";
 	}

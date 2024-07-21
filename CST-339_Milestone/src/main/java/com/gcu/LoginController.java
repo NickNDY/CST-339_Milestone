@@ -1,8 +1,5 @@
 package com.gcu;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +41,6 @@ public class LoginController {
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute("title", "Login Form");
-			model.addAttribute("username", null);
 			
 			return "login";
 		}
@@ -53,13 +49,10 @@ public class LoginController {
 		if (!loginModel.getPassword().equals("password"))
 		{
 			model.addAttribute("title", "Login Form");
-			model.addAttribute("username", null);
 			bindingResult.rejectValue("password", "error.user", "Incorrect username and/or password combination");
 			
 			return "login";
 		}
-		
-		model.addAttribute("username", loginModel.getUsername());
 		
 		return "index";
 	}

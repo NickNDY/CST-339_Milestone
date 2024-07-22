@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
+	<body>
+		<div layout:fragment="content">
+			<p>TEST</p>
+			<form action="#" th:action="@{/register/doRegistration}" th:object="${registrationModel}" method="post">
+				<table>
+					<tr>
+						<td>First Name</td><td><input type="text" th:field="*{firstname}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">First Name Error</h5></td>
+					</tr>
+					<tr>
+						<td>Last Name:</td><td><input type="text" th:field="*{lastname}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Last Name Error</h5></td>
+					</tr>
+					<tr>
+						<td>Email:</td><td><input type="text" th:field="*{email}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</h5></td>
+					</tr>
+					<tr>
+						<td>Phone Number:</td><td><input type="text" th:field="*{phone}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</h5></td>
+					</tr>
+					<tr>
+						<td>User Name:</td><td><input type="text" th:field="*{username}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">User Name Error</h5></td>
+					</tr>
+					<tr>
+						<td>Password:</td><td><input type="password" th:field="*{password}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</h5></td>
+					</tr>
+					<tr>
+						<td>Address:</td><td><input type="text" th:field="*{address}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</h5></td>
+					</tr>
+					<tr>
+						<td>City:</td><td><input type="text" th:field="*{city}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City Error</h5></td>
+					</tr>
+					<tr>
+						<td>State:</td><td><input type="text" th:field="*{state}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">State Error</h5></td>
+					</tr>
+					<tr>
+						<td>Zip Code:</td><td><input type="text" th:field="*{zipcode}"></td><td><h5 style="color:red" th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}">Zip Code Error</h5></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="Submit"></td>
+					</tr>
+				</table>
+				<div th:if="${#fields.hasErrors('*')}">List of Errors</div>
+				<div th:each="err : ${#fields.errors('*')}">
+					<span style="color:red" th:text="${err}" class="fieldError"></span>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

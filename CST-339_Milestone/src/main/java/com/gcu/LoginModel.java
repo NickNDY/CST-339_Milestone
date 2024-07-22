@@ -19,8 +19,8 @@ public class LoginModel {
 	}
 	
 	public LoginModel() {
-		this.username = "none";
-		this.password = "none";
+		this.username = "";
+		this.password = "";
 	}
 
 	public String getUsername() {

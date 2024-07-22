@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/login")
 public class LoginController {
 
 	/**
@@ -18,7 +18,7 @@ public class LoginController {
 	 * @param model Object used on returned page
 	 * @return login.html
 	 */
-	@GetMapping("/login")
+	@GetMapping("")
 	public String getIndex(Model model)
 	{
 		model.addAttribute("title", "Login Form");
@@ -28,19 +28,23 @@ public class LoginController {
 	}
 
 	/**
-	 * Posts made to "{address}/login" route here
+	 * Posts made to "{address}/doLogin" route here
 	 * @param loginModel The input loginModel from the form
 	 * @param bindingResult The result of the validation
 	 * @param model Object used on returned page
 	 * @return login.html upon failed login, index.html upon successful login
 	 */
-	@PostMapping("/doLogin")
+	@PostMapping("doLogin")
 	public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model)
 	{
+		// Console output for verification
+		System.out.println(String.format("Login submitted with: Username=%s & Password=%s", loginModel.getUsername(), loginModel.getPassword()));
+		
 		// Perform validation
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute("title", "Login Form");
+			model.addAttribute("username", null);
 			
 			return "login";
 		}
@@ -49,11 +53,14 @@ public class LoginController {
 		if (!loginModel.getPassword().equals("password"))
 		{
 			model.addAttribute("title", "Login Form");
+			model.addAttribute("username", null);
 			bindingResult.rejectValue("password", "error.user", "Incorrect username and/or password combination");
 			
 			return "login";
 		}
-		
-		return "index";
+
+		model.addAttribute("title", "Library");
+		model.addAttribute("username", loginModel.getUsername());
+		return "library";
 	}
 }

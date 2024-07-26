@@ -1,5 +1,8 @@
-package com.gcu;
+package com.gcu.controller;
 
+import com.gcu.model.LoginModel;
+import com.gcu.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +15,9 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+
+	@Autowired
+	private LoginService loginService;
 
 	/**
 	 * Login form is accessed at "{address}/login"
@@ -50,7 +56,7 @@ public class LoginController {
 		}
 		
 		// Perform authentication
-		if (!loginModel.getPassword().equals("password"))
+		if (!loginService.checkCredentials(loginModel))
 		{
 			model.addAttribute("title", "Login Form");
 			model.addAttribute("username", null);

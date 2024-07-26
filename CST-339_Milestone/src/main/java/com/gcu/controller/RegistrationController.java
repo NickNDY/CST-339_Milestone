@@ -1,5 +1,9 @@
-package com.gcu;
+package com.gcu.controller;
 
+import com.gcu.model.LoginModel;
+import com.gcu.model.RegistrationModel;
+import com.gcu.service.RegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +16,9 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
+
+	@Autowired
+	private RegistrationService registrationService;
 
 	/**
 	 * Registration form is accessed at "{address}/register"
@@ -52,8 +59,7 @@ public class RegistrationController {
 		
 		// Perform unique user verification
 		// Currently hard coded for admin & administrator
-		if (registrationModel.getUsername().equalsIgnoreCase("administrator") ||
-			registrationModel.getUsername().equalsIgnoreCase("admin"))
+		if (registrationService.isUsernameTaken(registrationModel.getUsername()))
 		{
 			model.addAttribute("title", "Registration Form");
 			bindingResult.rejectValue("username", "error.user", "Username already taken");

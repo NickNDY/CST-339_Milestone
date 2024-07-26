@@ -1,10 +1,12 @@
-package com.gcu;
+package com.gcu.model;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegistrationModel {
 
 	@NotNull(message="First name is a required field")

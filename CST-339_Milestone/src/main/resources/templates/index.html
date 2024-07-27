@@ -1,34 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
 	<body>
-		<div layout:fragment="content">
+		<div layout:fragment="content" class="main-content-home" style="width: 75%;">
 			<h4>Welcome to the home page of our web application!</h4>
-			
-			<p>This is the main application module accessible from the root URL of the web application</p><br/>
-			
-			<div style="width: 75%;">
-				<table class="table border">
-					<thead class="thead-dark">
-						<tr scope="col">
-							<th>Authors</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">Phillip Ball</th>
-						</tr>
-						<tr>
-							<th scope="row">Timothy Beers</td>
-						</tr>
-						<tr>
-							<th scope="row">Sari Saiadi</th>
-						</tr>
-						<tr>
-							<th scope="row">Nicholas Stanfill</th>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<p>This is the main application module accessible from the root URL of the web application</p>
+			<table class="table border">
+				<thead class="thead-dark">
+					<tr scope="col">
+						<th>Authors</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">Phillip Ball</th>
+					</tr>
+					<tr>
+						<th scope="row">Timothy Beers</th>
+					</tr>
+					<tr>
+						<th scope="row">Sari Saiadi</th>
+					</tr>
+					<tr>
+						<th scope="row">Nicholas Stanfill</th>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</body>
 </html>

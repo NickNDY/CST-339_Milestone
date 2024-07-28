@@ -4,32 +4,29 @@
 		<div layout:fragment="content">
 			<h4>Welcome to the catalog of our library!</h4>
 			
-			<p>The books are currently hard-coded. Books in a database coming soon to a web application near you! One convenient location! (In Africa)</p><br/>
+			<p>The books are currently hard-coded. Books in a database coming soon to a web application near you! One convenient
+				location! (In Africa)</p>
 			
-			<a role="button" class="btn btn-info" href="/library/create">Create Book</a>
+			<a role="button" class="btn btn-info mb-4" href="/library/create">Add a Book</a>
 			
-
-			<table>
-				<thead>
-					<tr>
-						<th style="text-align: center;">Author Name</th>
-						<th style="text-align: center;">Book Name</th>
-						<th style="text-align: center;">ISBN</th>
-						<th style="text-align: center;">Stock</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:if="${library == null}">
-						<td style="text-align: center;" colspan="4">No Books Available</td>
-					</tr>
-					<tr th:each="book : ${library}">
-						<td style="text-align: center;"><h5 th:text="${book.authorName}">0000000001</h5></td>
-						<td style="text-align: center;"><h5 th:text="${book.bookName}">Product 1</h5></td>
-						<td style="text-align: center;"><h5 th:text="${book.isbn}">1.00</h5></td>
-						<td style="text-align: center;"><h5 th:text="${book.stock}">1</h5></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="book-grid">
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 gy-4">
+					<div th:each="book : ${library}" class="col">
+						<div class="card h-100">
+							<div class="card-body">
+								<h5 class="card-title" th:text="${book.bookName}">Book Name</h5>
+								<h6 class="card-subtitle mb-2 text-muted" th:text="${book.authorName}">Author Name</h6>
+								<p class="card-text">ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+								<p class="card-text">Stock: <span th:text="${book.stock}">Stock</span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div th:if="${library == null || #lists.isEmpty(library)}" class="alert alert-info mt-4">
+				No Books Available
+			</div>
 		</div>
 	</body>
 </html>

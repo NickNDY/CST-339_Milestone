@@ -164,3 +164,33 @@ input[type="submit"]:hover {
     color: #e8491d;
     font-weight: bold;
 }
+
+/* Library Grid/Cards */
+.book-grid {
+    padding: 20px 0;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.card-subtitle {
+    margin-bottom: 1rem;
+}

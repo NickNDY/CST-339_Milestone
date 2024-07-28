@@ -4,7 +4,32 @@
 		<div layout:fragment="content">
 			<h4>Welcome to the catalog of our library!</h4>
 			
-			<p>This will be populated with books at a later date</p><br/>
+			<p>The books are currently hard-coded. Books in a database coming soon to a web application near you! One convenient location! (In Africa)</p><br/>
+			
+			<a role="button" class="btn btn-info" href="/library/create">Create Book</a>
+			
+
+			<table>
+				<thead>
+					<tr>
+						<th style="text-align: center;">Author Name</th>
+						<th style="text-align: center;">Book Name</th>
+						<th style="text-align: center;">ISBN</th>
+						<th style="text-align: center;">Stock</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${library == null}">
+						<td style="text-align: center;" colspan="4">No Books Available</td>
+					</tr>
+					<tr th:each="book : ${library}">
+						<td style="text-align: center;"><h5 th:text="${book.authorName}">0000000001</h5></td>
+						<td style="text-align: center;"><h5 th:text="${book.bookName}">Product 1</h5></td>
+						<td style="text-align: center;"><h5 th:text="${book.isbn}">1.00</h5></td>
+						<td style="text-align: center;"><h5 th:text="${book.stock}">1</h5></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</body>
 </html>

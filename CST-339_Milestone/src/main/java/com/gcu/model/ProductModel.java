@@ -1,6 +1,5 @@
 package com.gcu.model;
 
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +25,13 @@ public class ProductModel {
     @Max(9999)
     private Integer stock;
 
+    /**
+     * Construct a ProductModel
+     * @param bookName The name of the book
+     * @param isbn The ISBN code of the book
+     * @param authorName The book's author
+     * @param stock The quantity in stock
+     */
     public ProductModel(String bookName, String isbn, String authorName, Integer stock) {
         this.bookName = bookName;
         this.isbn = isbn;

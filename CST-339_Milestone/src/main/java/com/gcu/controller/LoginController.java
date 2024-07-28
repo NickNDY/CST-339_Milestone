@@ -2,6 +2,8 @@ package com.gcu.controller;
 
 import com.gcu.model.LoginModel;
 import com.gcu.service.LoginService;
+import com.gcu.service.ProductService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private ProductService productService;
 
 	/**
 	 * Login form is accessed at "{address}/login"
@@ -68,6 +73,7 @@ public class LoginController {
 
 		model.addAttribute("title", "Library");
 		model.addAttribute("username", loginModel.getUsername());
+		model.addAttribute("library", productService.getBooks());
 		return "library";
 	}
 }

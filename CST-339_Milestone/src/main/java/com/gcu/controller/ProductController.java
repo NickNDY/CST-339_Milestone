@@ -1,6 +1,5 @@
 package com.gcu.controller;
 
-import com.gcu.model.LoginModel;
 import com.gcu.model.ProductModel;
 import com.gcu.service.ProductService;
 import jakarta.validation.Valid;
@@ -30,10 +29,17 @@ public class ProductController {
 	public String getLibrary(Model model)
 	{
 		model.addAttribute("title", "Library");
+		model.addAttribute("library", productService.getBooks());
 		
 		return "library";
 	}
 	
+	/**
+	 * Create a book module allowing the user to submit a book
+	 * GET Request returns the page
+	 * @param model Object used on returned page
+	 * @return createnewbook.html
+	 */
 	@GetMapping("create")
 	public String createProduct(Model model) {
 		model.addAttribute("title", "Create a new Book");
@@ -41,7 +47,14 @@ public class ProductController {
 		return "createnewbook";
 	}
 
-
+	/**
+	 * Create a book module allowing the user to submit a book
+	 * POST Requests are processed and the library is returned
+	 * @param productModel The submitted book
+	 * @param bindingResult The validation results
+	 * @param model Object used on returned page
+	 * @return createnewbook.html if it failed, library.html if it succeeded
+	 */
 	@PostMapping("create")
 	public String createProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
 		
@@ -54,6 +67,7 @@ public class ProductController {
 		productService.addProduct(productModel);
 
 		model.addAttribute("title", "Library");
+		model.addAttribute("library", productService.getBooks());
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
 		return "library";

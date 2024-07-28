@@ -19,11 +19,14 @@
 				<li th:if="${username == null}" class="nav-item">
 					<a class="nav-link" href="/login">Login</a>
 				</li>
+				<li th:if="${username == null}" class="nav-item">
+					<a class="nav-link" href="/register">Register</a>
+				</li>
 				<li th:if="${username != null}" class="nav-item">
 					<a class="nav-link" href="#" th:text="${username}">Welcome</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/register">Register</a>
+				<li th:if="${username != null}" class="nav-item">
+					<a class="nav-link" href="/library">Library</a>
 				</li>
 			</ul>
 		</div>

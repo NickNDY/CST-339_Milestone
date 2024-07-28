@@ -51,6 +51,7 @@ public class LoginController {
 		{
 			model.addAttribute("title", "Login Form");
 			model.addAttribute("username", null);
+			model.addAttribute("loginModel", loginModel);
 			
 			return "login";
 		}

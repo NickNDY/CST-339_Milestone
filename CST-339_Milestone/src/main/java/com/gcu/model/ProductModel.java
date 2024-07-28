@@ -1,5 +1,8 @@
 package com.gcu.model;
 
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
@@ -7,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductModel {
     @NotNull(message="Book name is required")
-    @Size(min=10, max=255, message="Book name must be between 10 and 255 characters")
+    @Size(min=3, max=255, message="Book name must be between 3 and 255 characters")
     private String bookName;
 
     @NotNull(message="ISBN is required")
@@ -19,7 +22,8 @@ public class ProductModel {
     private String authorName;
 
     @NotNull(message="Stock is required")
-    @Size(min=1, max=4, message="Stock must be between 1 and 4 numbers in length")
+    @Min(1)
+    @Max(9999)
     private Integer stock;
 
     public ProductModel(String bookName, String isbn, String authorName, Integer stock) {

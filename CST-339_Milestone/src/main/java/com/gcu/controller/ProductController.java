@@ -15,39 +15,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/library")
 public class ProductController {
 
 	@Autowired
 	private ProductService productService;
 
 	/**
-	 * Login form is accessed at "{address}/login"
+	 * Library is accessed at "{address}/library"
 	 * @param model Object used on returned page
-	 * @return login.html
+	 * @return library.html
 	 */
 	@GetMapping("")
-	public String getBooksModel(Model model)
+	public String getLibrary(Model model)
 	{
-		model.addAttribute("title", "Books");
-		model.addAttribute("productModel", new ProductModel());
+		model.addAttribute("title", "Library");
 		
-		return "books";
+		return "library";
+	}
+	
+	@GetMapping("create")
+	public String createProduct(Model model) {
+		model.addAttribute("title", "Create a new Book");
+		model.addAttribute("productModel", new ProductModel());
+		return "createnewbook";
 	}
 
 
 	@PostMapping("create")
 	public String createProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
-		System.out.println(String.format("Product submitted: BookName=%s, ISBN=%s, AuthorName=%s, Stock=%s",
-				productModel.getBookName(), productModel.getIsbn(), productModel.getAuthorName(), productModel.getStock()));
-
+		
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("title", "Books");
-			return "CreateNewBook";
+			model.addAttribute("title", "Create a new Book");
+			model.addAttribute("productModel", productModel);
+			return "createnewbook";
 		}
+		
+		productService.addProduct(productModel);
 
 		model.addAttribute("title", "Library");
-		model.addAttribute("bookName", productModel.getBookName());
+		// Perhaps we can highlight the added book in the library later
+		// model.addAttribute("bookName", productModel.getBookName());
 		return "library";
 	}
 }

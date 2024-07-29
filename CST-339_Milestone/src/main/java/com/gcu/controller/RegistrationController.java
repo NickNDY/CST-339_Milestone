@@ -66,6 +66,8 @@ public class RegistrationController {
 			
 			return "register";
 		}
+		
+		// Add user to database here
 
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());

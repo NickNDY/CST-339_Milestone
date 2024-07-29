@@ -104,6 +104,10 @@ footer {
     margin-top: 20px;
 }
 
+.author-table-header {
+	background: #50a3a2;
+}
+
 /* Form Styles */
 form {
     background: #ffffff;

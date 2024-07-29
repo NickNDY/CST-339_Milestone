@@ -2,6 +2,8 @@ package com.gcu.service;
 
 import com.gcu.model.ProductModel;
 
+import jakarta.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
 
+	private List<ProductModel> bookList = new ArrayList<ProductModel>();
 	/**
 	 * Checks whether a product is in stock
 	 * @param productModel The product to check
@@ -29,6 +32,7 @@ public class ProductService {
     public boolean addProduct(ProductModel productModel) {
 		System.out.println(String.format("Product submitted: BookName=%s, ISBN=%s, AuthorName=%s, Stock=%s",
 				productModel.getBookName(), productModel.getIsbn(), productModel.getAuthorName(), productModel.getStock()));
+		bookList.add(productModel);
 		
 		// Hard-coded, add to database here
 		
@@ -43,14 +47,22 @@ public class ProductService {
      */
     public List<ProductModel> getBooks()
     {
-    	List<ProductModel> bookList = new ArrayList<ProductModel>();
-
-    	bookList.add(new ProductModel("Book 1", "Author 1", "00000000000001", 1));
-    	bookList.add(new ProductModel("Book 5", "Author 2", "00000000000002", 2));
-    	bookList.add(new ProductModel("Book 6", "Author 3", "00000000000003", 3));
-    	bookList.add(new ProductModel("Book 7", "Author 4", "00000000000004", 4));
-    	bookList.add(new ProductModel("Book 8", "Author 5", "00000000000005", 5));
-    	
     	return bookList;
+    }
+    
+    /**
+     * Initializes the hard-coded list of books
+     */
+    @PostConstruct
+    public void init()
+    {
+    	bookList.add(new ProductModel("Book 1", "00000000000001", "Author 1", 1));
+    	bookList.add(new ProductModel("Book 2", "00000000000002", "Author 2", 2));
+    	bookList.add(new ProductModel("Book 3", "00000000000003", "Author 3", 3));
+    	bookList.add(new ProductModel("Book 4", "00000000000004", "Author 4", 4));
+    	bookList.add(new ProductModel("Book 5", "00000000000005", "Author 5", 5));
+    	bookList.add(new ProductModel("Book 6", "00000000000006", "Author 6", 6));
+    	bookList.add(new ProductModel("Book 7", "00000000000007", "Author 7", 7));
+    	bookList.add(new ProductModel("Book 8", "00000000000008", "Author 8", 8));
     }
 }

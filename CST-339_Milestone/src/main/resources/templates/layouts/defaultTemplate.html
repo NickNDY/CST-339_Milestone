@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title th:text="${title}">Title</title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<link rel="stylesheet" th:href="@{/style.css}">
@@ -11,14 +12,14 @@
 	</head>
 	
 	<body>
-		<div align="center">
-			<div th:replace="~{layouts/common :: header}">My Header</div>
-			
-			<section layout:fragment="content">
-				<p>My Body Contents</p>
-			</section>
-			
-			<div th:replace="~{layouts/common :: footer}">My Footer</div>
+		<header th:replace="~{layouts/common :: header}"></header>
+	
+		<div class="container">
+			<main class="main-content" layout:fragment="content">
+				<!-- This is where the content of each page will be inserted -->
+			</main>
 		</div>
+	
+		<footer th:replace="~{layouts/common :: footer}"></footer>
 	</body>
 </html>

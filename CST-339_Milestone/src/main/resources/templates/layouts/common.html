@@ -1,38 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<div th:fragment="header">
-		<div align="center">
-			<h1>Welcome to our CST-339 Milestone Web Application</h1>
+<body>
+	<header th:fragment="header">
+		<div class="container">
+			<div id="branding">
+				<h1><a href="/">CST-339 Milestone Web Application</a></h1>
+			</div>
+			<nav>
+				<ul>
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:href="@{/login}">Login</a></li>
+					<li><a th:href="@{/register}">Register</a></li>
+          <li><a th:href="@{/library}">Library</a></li>
+					<li th:if="${username}" th:text="${username}"></li>
+				</ul>
+			</nav>
 		</div>
-		
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">GCU</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-				</li>
-				<li th:if="${username == null}" class="nav-item">
-					<a class="nav-link" href="/login">Login</a>
-				</li>
-				<li th:if="${username == null}" class="nav-item">
-					<a class="nav-link" href="/register">Register</a>
-				</li>
-				<li th:if="${username != null}" class="nav-item">
-					<a class="nav-link" href="#" th:text="${username}">Welcome</a>
-				</li>
-				<li th:if="${username != null}" class="nav-item">
-					<a class="nav-link" href="/library">Library</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	</header>
 
-	<div th:fragment="footer">
-		<h5 style="color:purple; text-align:center; position:fixed; bottom:0; width:100%;">Copyright 2024 Grand Canyon University</h5>
-	</div>
+	<footer th:fragment="footer">
+		<p>&copy; 2024 Grand Canyon University</p>
+	</footer>
+</body>
 </html>

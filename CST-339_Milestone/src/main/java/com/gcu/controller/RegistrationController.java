@@ -1,8 +1,5 @@
 package com.gcu.controller;
 
-import com.gcu.model.LoginModel;
-import com.gcu.model.RegistrationModel;
-import com.gcu.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.gcu.model.LoginModel;
+import com.gcu.model.RegistrationModel;
+import com.gcu.service.RegistrationDataService;
+import com.gcu.service.RegistrationService;
 
 import jakarta.validation.Valid;
 
@@ -19,6 +21,9 @@ public class RegistrationController {
 
 	@Autowired
 	private RegistrationService registrationService;
+
+	@Autowired
+    private RegistrationDataService registrationDataService;
 
 	/**
 	 * Registration form is accessed at "{address}/register"
@@ -67,7 +72,12 @@ public class RegistrationController {
 			return "register";
 		}
 		
-		// Add user to database here
+		// Adding user to persistent data using JPA Repository
+		if (!registrationDataService.createUser(registrationModel)) {
+            model.addAttribute("title", "Registration Form");
+            bindingResult.rejectValue("username", "error.user", "Username or email already exists");
+            return "register";
+        }
 
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
+import com.gcu.entity.ProductEntity;
+
 @Component
 public class ProductModel {
     @NotNull(message="Book name is required")
@@ -39,8 +41,17 @@ public class ProductModel {
         this.stock = stock;
     }
 
-    public ProductModel() {
+    public ProductModel()
+    {
 
+    }
+    
+    public ProductModel(ProductEntity entity)
+    {
+    	this.bookName = entity.getBookName();
+    	this.isbn = entity.getIsbn();
+    	this.authorName = entity.getAuthorName();
+    	this.stock = entity.getStock();
     }
 
     public String getBookName() {

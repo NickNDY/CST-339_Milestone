@@ -2,7 +2,6 @@ package com.gcu.controller;
 
 import com.gcu.model.LoginModel;
 import com.gcu.service.LoginService;
-import com.gcu.service.ProductService;
 import com.gcu.utils.SessionState;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
-	
-	@Autowired
-	private ProductService productService;
 	
 	@Autowired
 	private SessionState state;
@@ -77,10 +73,20 @@ public class LoginController {
 			return "login";
 		}
 
-		model.addAttribute("title", "Library");
-		state.setUsername(loginModel.getUsername());
-		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
-		model.addAttribute("library", productService.getBooks());
-		return "library";
+		state.setUsername(FormatCasing(loginModel.getUsername()));
+		
+		return "redirect:/library";
+	}
+	
+	/**
+	 * Capitalizes the first letter of the given text
+	 * @param input The text to format
+	 * @return The formatted text
+	 */
+	private String FormatCasing(String input)
+	{
+		if (input.length() == 0) return input;
+		if (input.length() == 1) return input.toUpperCase();
+		return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
 	}
 }

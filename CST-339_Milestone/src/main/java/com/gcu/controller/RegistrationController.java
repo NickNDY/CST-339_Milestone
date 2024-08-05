@@ -12,6 +12,7 @@ import com.gcu.model.LoginModel;
 import com.gcu.model.RegistrationModel;
 import com.gcu.service.RegistrationDataService;
 import com.gcu.service.RegistrationService;
+import com.gcu.utils.SessionState;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +25,9 @@ public class RegistrationController {
 
 	@Autowired
     private RegistrationDataService registrationDataService;
+	
+	@Autowired
+	private SessionState state;
 
 	/**
 	 * Registration form is accessed at "{address}/register"
@@ -35,6 +39,7 @@ public class RegistrationController {
 	{
 		model.addAttribute("title", "Registration Form");
 		model.addAttribute("registrationModel", new RegistrationModel());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		
 		return "register";
 	}
@@ -54,6 +59,8 @@ public class RegistrationController {
 							registrationModel.getAddress(), registrationModel.getCity(), registrationModel.getEmail(), registrationModel.getFirstname(), registrationModel.getLastname(),
 							registrationModel.getPassword(), registrationModel.getPhone(), registrationModel.getState(), registrationModel.getUsername(), registrationModel.getZipcode()));
 		
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+		
 		// Perform validation
 		if (bindingResult.hasErrors())
 		{
@@ -63,11 +70,15 @@ public class RegistrationController {
 		}
 		
 		// Perform unique user verification
-		// Currently hard coded for admin & administrator
-		if (registrationService.isUsernameTaken(registrationModel.getUsername()))
+		boolean takenUsername = registrationService.isUsernameTaken(registrationModel.getUsername()),
+				takenEmail = registrationService.isEmailUsed(registrationModel.getEmail());
+		if (takenUsername || takenEmail)
 		{
 			model.addAttribute("title", "Registration Form");
-			bindingResult.rejectValue("username", "error.user", "Username already taken");
+			if (takenUsername)
+				bindingResult.rejectValue("username", "error.user", "Username already taken");
+			if (takenEmail)
+				bindingResult.rejectValue("email", "error.user", "Email already taken");
 			
 			return "register";
 		}
@@ -76,12 +87,14 @@ public class RegistrationController {
 		if (!registrationDataService.createUser(registrationModel)) {
             model.addAttribute("title", "Registration Form");
             bindingResult.rejectValue("username", "error.user", "Username or email already exists");
+            
             return "register";
         }
 
+		state.setUsername("");
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());
-		model.addAttribute("username", null);
 		return "login";
 	}
 }

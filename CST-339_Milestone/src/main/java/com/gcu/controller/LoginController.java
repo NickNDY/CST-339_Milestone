@@ -3,6 +3,7 @@ package com.gcu.controller;
 import com.gcu.model.LoginModel;
 import com.gcu.service.LoginService;
 import com.gcu.service.ProductService;
+import com.gcu.utils.SessionState;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class LoginController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private SessionState state;
 
 	/**
 	 * Login form is accessed at "{address}/login"
@@ -34,6 +38,7 @@ public class LoginController {
 	{
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		
 		return "login";
 	}
@@ -55,7 +60,7 @@ public class LoginController {
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute("title", "Login Form");
-			model.addAttribute("username", null);
+			model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 			model.addAttribute("loginModel", loginModel);
 			
 			return "login";
@@ -65,14 +70,16 @@ public class LoginController {
 		if (!loginService.checkCredentials(loginModel))
 		{
 			model.addAttribute("title", "Login Form");
-			model.addAttribute("username", null);
+			state.setUsername("");
+			model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 			bindingResult.rejectValue("password", "error.user", "Incorrect username and/or password combination");
 			
 			return "login";
 		}
 
 		model.addAttribute("title", "Library");
-		model.addAttribute("username", loginModel.getUsername());
+		state.setUsername(loginModel.getUsername());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		model.addAttribute("library", productService.getBooks());
 		return "library";
 	}

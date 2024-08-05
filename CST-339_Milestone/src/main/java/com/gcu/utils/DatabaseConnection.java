@@ -17,7 +17,7 @@ public class DatabaseConnection {
             connection = DriverManager.getConnection(url, username, password);
             System.out.println(" connected ");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(String.format("Error creating database connection: %s", e.getMessage()));
         }
     }
     public static synchronized DatabaseConnection getInstance() {

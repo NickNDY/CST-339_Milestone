@@ -2,6 +2,8 @@ package com.gcu.controller;
 
 import com.gcu.model.ProductModel;
 import com.gcu.service.ProductService;
+import com.gcu.utils.SessionState;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private SessionState state;
 
 	/**
 	 * Library is accessed at "{address}/library"
@@ -30,6 +35,7 @@ public class ProductController {
 	{
 		model.addAttribute("title", "Library");
 		model.addAttribute("library", productService.getBooks());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		
 		return "library";
 	}
@@ -44,6 +50,7 @@ public class ProductController {
 	public String createProduct(Model model) {
 		model.addAttribute("title", "Create a new Book");
 		model.addAttribute("productModel", new ProductModel());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		return "createnewbook";
 	}
 
@@ -68,6 +75,7 @@ public class ProductController {
 
 		model.addAttribute("title", "Library");
 		model.addAttribute("library", productService.getBooks());
+		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
 		return "library";

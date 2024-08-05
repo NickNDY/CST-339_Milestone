@@ -23,8 +23,8 @@ public class LoginService {
 	public boolean checkCredentials(LoginModel loginModel)
 	{
 		UserEntity userEntity = new UserEntity();
-		userEntity = userRepository.findByUsername(loginModel.getUsername());
+		userEntity = userRepository.findByUsernameIgnoreCase(loginModel.getUsername());
 
-		return userEntity.getPassword() == loginModel.getPassword();
+		return userEntity != null && userEntity.getPassword().equals(loginModel.getPassword());
 	}
 }

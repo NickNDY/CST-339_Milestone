@@ -23,8 +23,8 @@ public class RegistrationDataService {
      * @return True if the user was created successfully, false if the username or email already exists.
      */
     public boolean createUser(RegistrationModel registrationModel) {
-        if (userRepository.findByUsername(registrationModel.getUsername()) != null ||
-            userRepository.findByEmail(registrationModel.getEmail()) != null) {
+        if (userRepository.findByUsernameIgnoreCase(registrationModel.getUsername()) != null ||
+            userRepository.findByEmailIgnoreCase(registrationModel.getEmail()) != null) {
             return false; // Username or email already exists
         }
 

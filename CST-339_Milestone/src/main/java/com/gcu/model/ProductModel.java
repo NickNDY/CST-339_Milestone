@@ -48,10 +48,13 @@ public class ProductModel {
     
     public ProductModel(ProductEntity entity)
     {
-    	this.bookName = entity.getBookName();
-    	this.isbn = entity.getIsbn();
-    	this.authorName = entity.getAuthorName();
-    	this.stock = entity.getStock();
+    	if (entity != null)
+    	{
+	    	this.bookName = entity.getBookName();
+	    	this.isbn = entity.getIsbn();
+	    	this.authorName = entity.getAuthorName();
+	    	this.stock = entity.getStock();
+    	}
     }
 
     public String getBookName() {

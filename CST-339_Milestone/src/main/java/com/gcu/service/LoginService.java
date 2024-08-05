@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
 	@Autowired
-    	private UserRepository userRepository;
+	private UserRepository userRepository;
 
 	/**
 	 * Authenticates the user's login credentials

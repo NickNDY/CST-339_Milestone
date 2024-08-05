@@ -5,6 +5,9 @@ import org.springframework.web.context.annotation.SessionScope;
 
 @Component
 @SessionScope
+/**
+ * Intended to store user information per session to allow users to stay logged in for the length of their session
+ */
 public class SessionState {
 	private String username;
 

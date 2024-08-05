@@ -71,6 +71,15 @@ public class ProductController {
 			return "createnewbook";
 		}
 		
+		if (productService.getBookByIsbn(productModel.getIsbn()) != null)
+		{
+			System.out.println(String.format("Book with isbn %s already exists", productModel.getIsbn()));
+			model.addAttribute("title", "Create a new Book");
+			model.addAttribute("productModel", productModel);
+			bindingResult.rejectValue("isbn", "error.user", "ISBN already taken");
+			return "createnewbook";
+		}
+		
 		productService.addProduct(productModel);
 
 		model.addAttribute("title", "Library");

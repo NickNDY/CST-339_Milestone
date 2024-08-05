@@ -44,4 +44,24 @@ public class RegistrationDataService {
         userRepository.save(userEntity);
         return true;
     }
+	
+	/**
+	 * Checks whether a username is already taken or forbidden (admin/administrator)
+	 * @param username The username to check
+	 * @return True if taken, false if available
+	 */
+    public  boolean isUsernameTaken(String username)
+    {
+        return username.equalsIgnoreCase("administrator") || username.equalsIgnoreCase("admin") || userRepository.findByUsernameIgnoreCase(username) != null;
+    }
+
+    /**
+     * Checks whether an email is already used
+     * @param username
+     * @return True if taken, false if available
+     */
+    public  boolean isEmailUsed(String email)
+    {
+        return userRepository.findByEmailIgnoreCase(email) != null;
+    }
 }

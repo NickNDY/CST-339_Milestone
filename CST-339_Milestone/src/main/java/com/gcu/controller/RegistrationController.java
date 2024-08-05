@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gcu.model.LoginModel;
 import com.gcu.model.RegistrationModel;
 import com.gcu.service.RegistrationDataService;
-import com.gcu.service.RegistrationService;
 import com.gcu.utils.SessionState;
 
 import jakarta.validation.Valid;
@@ -19,9 +18,6 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
-
-	@Autowired
-	private RegistrationService registrationService;
 
 	@Autowired
     private RegistrationDataService registrationDataService;
@@ -70,8 +66,8 @@ public class RegistrationController {
 		}
 		
 		// Perform unique user verification
-		boolean takenUsername = registrationService.isUsernameTaken(registrationModel.getUsername()),
-				takenEmail = registrationService.isEmailUsed(registrationModel.getEmail());
+		boolean takenUsername = registrationDataService.isUsernameTaken(registrationModel.getUsername()),
+				takenEmail = registrationDataService.isEmailUsed(registrationModel.getEmail());
 		if (takenUsername || takenEmail)
 		{
 			model.addAttribute("title", "Registration Form");

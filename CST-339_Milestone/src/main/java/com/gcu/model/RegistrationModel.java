@@ -32,7 +32,7 @@ public class RegistrationModel {
 	private String username;
 	
 	@NotNull(message="Password is a required field")
-	@Size(min=3, max=32, message="User name must be between 3 and 32 characters")
+	@Size(min=3, max=32, message="Password must be between 3 and 32 characters")
 	private String password;
 	
 	@NotNull(message="Address is a required field")

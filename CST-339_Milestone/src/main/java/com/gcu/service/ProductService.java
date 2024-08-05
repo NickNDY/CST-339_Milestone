@@ -15,16 +15,6 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRepository repository;
-	
-	/**
-	 * Checks whether a product is in stock
-	 * @param productModel The product to check
-	 * @param quantity The quantity needed
-	 * @return True if there are enough, false otherwise
-	 */
-    public boolean isProductAvailable(ProductModel productModel, Integer quantity) {
-        return productModel.getStock() <= quantity;
-    }
     
     /**
      * Adds a product to the database
@@ -36,7 +26,7 @@ public class ProductService {
 		System.out.println(String.format("Product submitted: BookName=%s, ISBN=%s, AuthorName=%s, Stock=%s",
 				productModel.getBookName(), productModel.getIsbn(), productModel.getAuthorName(), productModel.getStock()));
 		
-		if (repository.existsByIsbn(productModel.getIsbn()))
+		if (repository.findByIsbn(productModel.getIsbn()) != null)
 		{
 			System.out.println(String.format("Book with isbn %s already exists", productModel.getIsbn()));
 		}
@@ -65,5 +55,18 @@ public class ProductService {
     	}
     	
     	return modelList;
+    }
+    
+    /**
+     * Attempts to find a book by ISBN
+     * @param isbn The ISBN to search for
+     * @return The located ProductModel, or null if not found
+     */
+    public ProductModel getBookByIsbn(String isbn)
+    {
+    	ProductEntity entity = repository.findByIsbn(isbn);
+    	if (entity != null)
+    		return new ProductModel(repository.findByIsbn(isbn));
+    	return null;
     }
 }

@@ -37,10 +37,13 @@ public class ProductEntity {
 	
 	public ProductEntity(ProductModel model)
 	{
-		this.bookName = model.getBookName();
-		this.isbn = model.getIsbn();
-		this.authorName = model.getAuthorName();
-		this.stock = model.getStock();
+		if (model != null)
+		{
+			this.bookName = model.getBookName();
+			this.isbn = model.getIsbn();
+			this.authorName = model.getAuthorName();
+			this.stock = model.getStock();
+		}
 	}
 
 	public Long getId() {

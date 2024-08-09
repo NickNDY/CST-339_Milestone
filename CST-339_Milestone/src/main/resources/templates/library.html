@@ -12,14 +12,17 @@
 			<div class="book-grid">
 				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 gy-4">
 					<div th:each="book : ${library}" class="col">
-						<div class="card h-100">
-							<div class="card-body">
-								<h5 class="card-title" th:text="${book.bookName}">Book Name</h5>
-								<h6 class="card-subtitle mb-2 text-muted" th:text="${book.authorName}">Author Name</h6>
-								<p class="card-text">ISBN: <span th:text="${book.isbn}">ISBN</span></p>
-								<p class="card-text">Stock: <span th:text="${book.stock}">Stock</span></p>
+						<!-- Phillip - Added an anchor tag here to make it clickable towards the viewbook.html-->
+						<a th:href="@{/library/view/{isbn}(isbn=${book.isbn})}" class="text-decoration-none">
+							<div class="card h-100">
+								<div class="card-body">
+									<h5 class="card-title" th:text="${book.bookName}">Book Name</h5>
+									<h6 class="card-subtitle mb-2 text-muted" th:text="${book.authorName}">Author Name</h6>
+									<p class="card-text">ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+									<p class="card-text">Stock: <span th:text="${book.stock}">Stock</span></p>
+								</div>
 							</div>
-						</div>
+						</a>
 					</div>
 				</div>
 			</div>

@@ -1,17 +1,19 @@
 package com.gcu.controller;
 
-import com.gcu.model.ProductModel;
-import com.gcu.service.ProductService;
-import com.gcu.utils.SessionState;
-
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.gcu.model.ProductModel;
+import com.gcu.service.ProductService;
+import com.gcu.utils.SessionState;
+
+import jakarta.validation.Valid;
 
 
 
@@ -89,4 +91,20 @@ public class ProductController {
 		// model.addAttribute("bookName", productModel.getBookName());
 		return "library";
 	}
+
+	@GetMapping("/view/{isbn}")
+	public String viewProduct(@PathVariable String isbn, Model model) {
+    	ProductModel book = productService.getBookByIsbn(isbn);
+
+    	if (book == null) {
+        	model.addAttribute("errorMessage", "Book not found");
+        	return "error";  // Create an error.html page if not already existing
+    	}
+
+    	model.addAttribute("title", "View Book");
+    	model.addAttribute("book", book);
+    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+    	return "viewbook";
+	}
+	
 }

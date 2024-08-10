@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultTemplate}">
+
+<body>
+      <div layout:fragment="content" class="main-content-home" style="width: 75%;">
+            <table class="table border">
+                  <thead>
+                        <tr class="author-table-header" scope="col">
+                              <th>Delete Book Confirmation</th>
+                        </tr>
+                  </thead>
+            </table>
+            <div>
+                  <h2>Confirm Deletion</h2>
+                  <p>Are you sure you want to delete the following book?</p>
+
+                  <div class="book-details">
+                        <p><strong>Book Name:</strong> <span th:text="${productModel.bookName}">Book Name</span></p>
+                        <p><strong>Author:</strong> <span th:text="${productModel.authorName}">Author Name</span></p>
+                        <p><strong>ISBN:</strong> <span th:text="${productModel.isbn}">ISBN</span></p>
+                  </div>
+
+                  <div class="mt-4">
+                        <form th:action="@{/library/delete/{isbn}(isbn=${productModel.isbn})}" method="post">
+                              <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                              <a th:href="@{/library}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                  </div>
+            </div>
+      </div>
+</body>
+
+</html>

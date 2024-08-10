@@ -83,12 +83,9 @@ public class ProductController {
 		
 		productService.addProduct(productModel);
 
-		model.addAttribute("title", "Library");
-		model.addAttribute("library", productService.getBooks());
-		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
-		return "library";
+		return getLibrary(model);
 	}
 
 	@GetMapping("update")
@@ -117,13 +114,25 @@ public class ProductController {
 		}
 
 		productService.updateProduct(productModel);
-
-		model.addAttribute("title", "Library");
-		model.addAttribute("library", productService.getBooks());
-		model.addAttribute("username", !state.getUsername().isEmpty() ? state.getUsername() : null);
-		return "library";
+		return getLibrary(model);
 	}
 
+	@GetMapping("/delete/{isbn}")
+	public String showDeleteForm(@PathVariable String isbn, Model model) {
+		ProductModel productModel = productService.getBookByIsbn(isbn);
+		if (productModel == null) {
+			return getLibrary(model);
+		}
+		model.addAttribute("title", "Delete Book");
+		model.addAttribute("productModel", productModel);
+		return "bookdelete";
+	}
 
+	@PostMapping("/delete/{isbn}")
+	public String deleteProduct(@PathVariable String isbn, Model model) {
 
+		ProductModel productModel = productService.getBookByIsbn(isbn);
+		productService.deleteProduct(productModel);
+		return getLibrary(model);
+	}
 }

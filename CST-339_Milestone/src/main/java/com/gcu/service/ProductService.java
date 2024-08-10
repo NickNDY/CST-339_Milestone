@@ -69,4 +69,22 @@ public class ProductService {
     		return new ProductModel(repository.findByIsbn(isbn));
     	return null;
     }
+
+
+	/**
+	 * Updates an existing product.
+	 * @param productModel The product model with updated information
+	 */
+	public void updateProduct(ProductModel productModel) {
+		ProductEntity productEntity = repository.findByIsbn(productModel.getIsbn());
+		if (productEntity != null) {
+			// Updating product fields
+			productEntity.setBookName(productModel.getBookName());
+			productEntity.setAuthorName(productModel.getAuthorName());
+			productEntity.setStock(productModel.getStock());
+
+			// Saving
+			repository.save(productEntity);
+		}
+	}
 }

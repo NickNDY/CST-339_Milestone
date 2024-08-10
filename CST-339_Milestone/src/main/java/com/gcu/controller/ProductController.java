@@ -1,5 +1,10 @@
 package com.gcu.controller;
 
+import com.gcu.model.ProductModel;
+import com.gcu.service.ProductService;
+import com.gcu.utils.SessionState;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,12 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.gcu.model.ProductModel;
-import com.gcu.service.ProductService;
-import com.gcu.utils.SessionState;
-
-import jakarta.validation.Valid;
 
 
 
@@ -92,19 +91,39 @@ public class ProductController {
 		return "library";
 	}
 
-	@GetMapping("/view/{isbn}")
-	public String viewProduct(@PathVariable String isbn, Model model) {
-    	ProductModel book = productService.getBookByIsbn(isbn);
+	@GetMapping("update")
+	public String updateProductForm(@PathVariable("isbn") String isbn, Model model) {
 
-    	if (book == null) {
-        	model.addAttribute("errorMessage", "Book not found");
-        	return "error";  // Create an error.html page if not already existing
-    	}
-
-    	model.addAttribute("title", "View Book");
-    	model.addAttribute("book", book);
-    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
-    	return "viewbook";
+		// taking product details
+		ProductModel productModel = productService.getBookByIsbn(isbn);
+		if (productModel == null) {
+			// if the product is not available
+			model.addAttribute("error", "Product not found");
+			return "error";
+		}
+		model.addAttribute("title", "Update Book");
+		model.addAttribute("productModel", productModel);
+		model.addAttribute("username", !state.getUsername().isEmpty() ? state.getUsername() : null);
+		return "updatebook"; // This should be the name of the HTML template for updating a product
 	}
-	
+
+
+	@PostMapping("update")
+	public String updateProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("title", "Update Book");
+			model.addAttribute("productModel", productModel);
+			return "updatebook"; // Return to update form if validation errors exist
+		}
+
+		productService.updateProduct(productModel);
+
+		model.addAttribute("title", "Library");
+		model.addAttribute("library", productService.getBooks());
+		model.addAttribute("username", !state.getUsername().isEmpty() ? state.getUsername() : null);
+		return "library";
+	}
+
+
+
 }

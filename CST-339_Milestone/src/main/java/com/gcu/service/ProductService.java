@@ -87,4 +87,15 @@ public class ProductService {
 			repository.save(productEntity);
 		}
 	}
+
+	/**
+	 * Deletes an existing product.
+	 * @param productModel The product model to delete
+	 */
+      public void deleteProduct(ProductModel productModel) {
+            ProductEntity productEntity = repository.findByIsbn(productModel.getIsbn());
+		if (productEntity != null) {
+			repository.delete(productEntity);
+		}
+      }
 }

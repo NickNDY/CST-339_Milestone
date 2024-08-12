@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
+	<body>
+		<div layout:fragment="content">
+			<div class="container">
+			    <h2>Update Book</h2>
+			    <form th:action="@{/library/update}" th:object="${productModel}" method="post">
+			        <div class="form-group">
+					<input type="text" th:field="*{bookName}" id="bookName" placeholder="Book Name" class="form-control"
+						th:classappend="${#fields.hasErrors('bookName')} ? 'is-invalid' : ''">
+					<span class="error" th:if="${#fields.hasErrors('bookName')}" th:errors="*{bookName}"></span>
+			        </div>
+			        <div class="form-group">
+					<input type="hidden" th:field="*{isbn}" id="isbn" placeholder="ISBN" class="form-control"
+						th:classappend="${#fields.hasErrors('isbn')} ? 'is-invalid' : ''">
+					<span class="error" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
+			        </div>
+			        <div class="form-group">
+					<input type="text" th:field="*{authorName}" id="authorName" placeholder="Author Name" class="form-control"
+						th:classappend="${#fields.hasErrors('authorName')} ? 'is-invalid' : ''">
+					<span class="error" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}"></span>
+			        </div>
+			        <div class="form-group">
+					<input type="number" th:field="*{stock}" id="stock" placeholder="Stock" class="form-control"
+						th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid' : ''">
+					<span class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
+			        </div>
+
+				<div class="form-group">
+					<input type="submit" value="Update Book" class="btn btn-primary">
+				</div>
+				<div th:if="${#fields.hasErrors('*')}" class="error general-error">
+					<p>Please correct the errors and resubmit.</p>
+				</div>
+			    </form>
+			    <div th:if="${message}">
+			        <p th:text="${message}" style="color:green;"></p>
+			    </div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -50,8 +50,10 @@ public class ProductController {
 	@GetMapping("create")
 	public String createProduct(Model model) {
 		model.addAttribute("title", "Create a new Book");
+		model.addAttribute("purpose", "Create a New Book");
 		model.addAttribute("productModel", new ProductModel());
 		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+		
 		return "createnewbook";
 	}
 
@@ -66,9 +68,11 @@ public class ProductController {
 	@PostMapping("create")
 	public String createProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
 		
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors())
+		{
 			model.addAttribute("title", "Create a new Book");
 			model.addAttribute("productModel", productModel);
+			
 			return "createnewbook";
 		}
 		
@@ -78,6 +82,7 @@ public class ProductController {
 			model.addAttribute("title", "Create a new Book");
 			model.addAttribute("productModel", productModel);
 			bindingResult.rejectValue("isbn", "error.user", "ISBN already taken");
+			
 			return "createnewbook";
 		}
 		
@@ -87,47 +92,103 @@ public class ProductController {
 		// model.addAttribute("bookName", productModel.getBookName());
 		return getLibrary(model);
 	}
+	
+	/**
+	 * Returns a page containing the selected book
+	 * @param isbn The ISBN of the selected book
+	 * @param model Object used on returned page
+	 * @return viewbook.html if it succeeded, error.html if it failed
+	 */
+	@GetMapping("view/{isbn}")
+	public String viewProduct(@PathVariable String isbn, Model model) {
+    	ProductModel book = productService.getBookByIsbn(isbn);
 
-	@GetMapping("update")
+    	if (book == null)
+    	{
+        	model.addAttribute("errorMessage", "Book not found");
+        	
+        	return "error";  // Create an error.html page if not already existing
+    	}
+
+    	model.addAttribute("title", "View Book");
+    	model.addAttribute("book", book);
+    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+    	
+    	return "viewbook";
+	}
+
+	/**
+	 * Returns a page for updating the selected book
+	 * @param isbn The ISBN of the selected book
+	 * @param model Object used on returned page
+	 * @return updatebook.html if it succeeded, error.html if it failed
+	 */
+	@GetMapping("update/{isbn}")
 	public String updateProductForm(@PathVariable("isbn") String isbn, Model model) {
 
 		// taking product details
 		ProductModel productModel = productService.getBookByIsbn(isbn);
-		if (productModel == null) {
+		if (productModel == null)
+		{
 			// if the product is not available
 			model.addAttribute("error", "Product not found");
+			
 			return "error";
 		}
 		model.addAttribute("title", "Update Book");
 		model.addAttribute("productModel", productModel);
 		model.addAttribute("username", !state.getUsername().isEmpty() ? state.getUsername() : null);
+		
 		return "updatebook"; // This should be the name of the HTML template for updating a product
 	}
 
-
+	/**
+	 * Processes updating a product
+	 * @param productModel The product to update
+	 * @param bindingResult The validation results of the form
+	 * @param model Object used on returned page
+	 * @return library.html if successful, updatebook.html if failed
+	 */
 	@PostMapping("update")
-	public String updateProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
+	public String updateProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model)
+	{
+		if (bindingResult.hasErrors())
+		{
 			model.addAttribute("title", "Update Book");
 			model.addAttribute("productModel", productModel);
 			return "updatebook"; // Return to update form if validation errors exist
 		}
 
 		productService.updateProduct(productModel);
+		
 		return getLibrary(model);
 	}
 
+	/**
+	 * Returns a page confirming deletion of the selected book
+	 * @param isbn The ISBN of the selected book
+	 * @param model Object used on returned page
+	 * @return library.html if book not found, bookdelete.html if found
+	 */
 	@GetMapping("/delete/{isbn}")
-	public String showDeleteForm(@PathVariable String isbn, Model model) {
+	public String showDeleteForm(@PathVariable String isbn, Model model)
+	{
 		ProductModel productModel = productService.getBookByIsbn(isbn);
 		if (productModel == null) {
 			return getLibrary(model);
 		}
 		model.addAttribute("title", "Delete Book");
 		model.addAttribute("productModel", productModel);
+    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
 		return "bookdelete";
 	}
 
+	/**
+	 * Processes deleting a product
+	 * @param isbn The ISBN of the selected product
+	 * @param model Object used on returned page
+	 * @return library.html
+	 */
 	@PostMapping("/delete/{isbn}")
 	public String deleteProduct(@PathVariable String isbn, Model model) {
 

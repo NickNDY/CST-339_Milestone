@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gcu.model.LoginModel;
 import com.gcu.model.RegistrationModel;
 import com.gcu.service.RegistrationDataService;
 import com.gcu.utils.SessionState;
@@ -88,9 +87,7 @@ public class RegistrationController {
         }
 
 		state.setUsername("");
-		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
-		model.addAttribute("title", "Login Form");
-		model.addAttribute("loginModel", new LoginModel());
-		return "login";
+
+		return "redirect:/login";
 	}
 }

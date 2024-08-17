@@ -1,10 +1,5 @@
 package com.gcu.controller;
 
-import com.gcu.model.ProductModel;
-import com.gcu.service.ProductService;
-import com.gcu.utils.SessionState;
-
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.gcu.model.ProductModel;
+import com.gcu.service.ProductService;
+import com.gcu.utils.SessionState;
+
+import jakarta.validation.Valid;
 
 
 
@@ -161,7 +162,7 @@ public class ProductController {
 
 		productService.updateProduct(productModel);
 		
-		return getLibrary(model);
+		return "redirect:/library";
 	}
 
 	/**
@@ -194,6 +195,6 @@ public class ProductController {
 
 		ProductModel productModel = productService.getBookByIsbn(isbn);
 		productService.deleteProduct(productModel);
-		return getLibrary(model);
+		return "redirect:/library";
 	}
 }

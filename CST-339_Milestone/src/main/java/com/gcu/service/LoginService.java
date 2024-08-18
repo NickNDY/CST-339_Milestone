@@ -1,49 +1,46 @@
 package com.gcu.service;
 
 import com.gcu.entity.UserEntity;
+import com.gcu.model.LoginModel;
 import com.gcu.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-
+//Service layer
 @Service
 public class LoginService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository ;
 
-    /**
-     * Loads the user by username and returns a UserDetails object for authentication.
-     * @param username The username of the user to load.
-     * @return UserDetails object containing the user's information.
-     * @throws UsernameNotFoundException if the user is not found.
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username);
-        
-        if (userEntity == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
+	/**
+	 * Authenticates the user's login credentials
+	 * Finds the user matching the username and validates the password matches
+	 * @param loginModel The input login model including the username and password
+	 * @return True if valid, false if invalid
+	 */
+	public boolean checkCredentials(LoginModel loginModel)
+	{
+		UserEntity userEntity = new UserEntity();
+		userEntity = userRepository.findByUsernameIgnoreCase(loginModel.getUsername());
 
-        // Returning UserDetails with the user's username, password, and roles/authorities
-        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
-    }
+		return userEntity != null && userEntity.getPassword().equals(loginModel.getPassword());
+	}
 
-    /**
-     * Authenticates the user's login credentials.
-     * @param loginModel The input login model including the username and password.
-     * @return True if valid, false if invalid.
-     */
-    public boolean checkCredentials(LoginModel loginModel) {
-        UserEntity userEntity = userRepository.findByUsernameIgnoreCase(loginModel.getUsername());
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username);
+		if (userEntity == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
 
-        return userEntity != null && userEntity.getPassword().equals(loginModel.getPassword());
-    }
+		return org.springframework.security.core.userdetails.User.withUsername(userEntity.getUsername())
+				.password(userEntity.getPassword())
+				.authorities("Admin")    //--->can be changed to any other user
+				.build();
+	}
 }

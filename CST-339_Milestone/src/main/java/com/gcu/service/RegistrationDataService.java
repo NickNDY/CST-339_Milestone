@@ -1,11 +1,13 @@
 package com.gcu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gcu.entity.UserEntity;
 import com.gcu.model.RegistrationModel;
 import com.gcu.repository.UserRepository;
+//import com.gcu.utils.SecurityConfig;
 
 /**
  * Service class for handling user registration.
@@ -63,5 +65,32 @@ public class RegistrationDataService {
     public  boolean isEmailUsed(String email)
     {
         return userRepository.findByEmailIgnoreCase(email) != null;
+    }
+
+
+    //injecting Password encoder from SecurityConfig
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    /**
+     * Registers a new user
+     * @param registrationModel The input registration model
+     */
+    public void registerUser(RegistrationModel registrationModel) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(registrationModel.getUsername());
+
+        // password encryption
+        userEntity.setPassword(passwordEncoder.encode(registrationModel.getPassword()));
+        userEntity.setFirstname(registrationModel.getFirstname());
+        userEntity.setLastname(registrationModel.getLastname());
+        userEntity.setEmail(registrationModel.getEmail());
+        userEntity.setPhone(registrationModel.getPhone());
+        userEntity.setAddress(registrationModel.getAddress());
+        userEntity.setCity(registrationModel.getCity());
+        userEntity.setState(registrationModel.getState());
+        userEntity.setZipcode(registrationModel.getZipcode());
+
+        userRepository.save(userEntity);
     }
 }

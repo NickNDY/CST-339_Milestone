@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
 	<body>
-		<div layout:fragment="content">
-			<form action="#" th:action="@{/register/doRegistration}" th:object="${registrationModel}" method="post">
+		<div layout:fragment="content" class="main-content-home">
+			<form class="form-default" action="#" th:action="@{/register/doRegistration}" th:object="${registrationModel}" method="post">
 				<div class="form-group">
 					<input type="text" th:field="*{firstname}" placeholder="First Name" class="form-control" th:classappend="${#fields.hasErrors('firstname')} ? 'is-invalid' : ''">
 					<span class="error" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>

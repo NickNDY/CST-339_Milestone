@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
 	<body>
-		<div layout:fragment="content">
-			<div class="container">
-			    <h2>Create a New Book</h2>
-			    <form th:action="@{/library/create}" th:object="${productModel}" method="post">
-			        <div class="form-group">
+		<div layout:fragment="content" class="main-content-home">
+			<table class="table border">
+				<thead>
+					<tr class="author-table-header" scope="col">
+						<th>Create New Book</th>
+					</tr>
+				</thead>
+		        
+			</table>
+		    <body>
+				<form class="form-default" th:action="@{/library/create}" th:object="${productModel}" method="post">
+				    <div class="form-group">
 					<input type="text" th:field="*{bookName}" id="bookName" placeholder="Book Name" class="form-control"
 						th:classappend="${#fields.hasErrors('bookName')} ? 'is-invalid' : ''">
 					<span class="error" th:if="${#fields.hasErrors('bookName')}" th:errors="*{bookName}"></span>
-			        </div>
-			        <div class="form-group">
+				    </div>
+				    <div class="form-group">
 					<input type="text" th:field="*{isbn}" id="isbn" placeholder="ISBN" class="form-control"
 						th:classappend="${#fields.hasErrors('isbn')} ? 'is-invalid' : ''">
 					<span class="error" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
-			        </div>
-			        <div class="form-group">
+				    </div>
+				    <div class="form-group">
 					<input type="text" th:field="*{authorName}" id="authorName" placeholder="Author Name" class="form-control"
 						th:classappend="${#fields.hasErrors('authorName')} ? 'is-invalid' : ''">
 					<span class="error" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}"></span>
-			        </div>
-			        <div class="form-group">
+				    </div>
+				    <div class="form-group">
 					<input type="number" th:field="*{stock}" id="stock" placeholder="Stock" class="form-control"
 						th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid' : ''">
 					<span class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
-			        </div>
+				    </div>
 
 				<div class="form-group">
 					<input type="submit" value="Create Book" class="btn btn-primary">
@@ -32,11 +39,12 @@
 				<div th:if="${#fields.hasErrors('*')}" class="error general-error">
 					<p>Please correct the errors and resubmit.</p>
 				</div>
-			    </form>
-			    <div th:if="${message}">
-			        <p th:text="${message}" style="color:green;"></p>
-			    </div>
-			</div>
+				</form>
+				<div th:if="${message}">
+				    <p th:text="${message}" style="color:green;"></p>
+				</div>
+				<a th:href="@{/library}" class="btn btn-secondary mt-3">Back to Library</a>
+		    </body>
 		</div>
 	</body>
 </html>

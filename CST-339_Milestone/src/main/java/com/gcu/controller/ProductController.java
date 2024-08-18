@@ -2,10 +2,11 @@ package com.gcu.controller;
 
 import com.gcu.model.ProductModel;
 import com.gcu.service.ProductService;
-import com.gcu.utils.SessionState;
+import com.gcu.utils.SessionLibrary;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,21 +23,18 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	
-	@Autowired
-	private SessionState state;
 
 	/**
 	 * Library is accessed at "{address}/library"
 	 * @param model Object used on returned page
 	 * @return library.html
 	 */
-	@GetMapping("")
-	public String getLibrary(Model model)
+	@GetMapping(value= { "", "/" })
+	public String getLibrary(Model model, Authentication authentication)
 	{
 		model.addAttribute("title", "Library");
 		model.addAttribute("library", productService.getBooks());
-		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+		model.addAttribute("username", SessionLibrary.getUsername(authentication));
 		
 		return "library";
 	}
@@ -48,11 +46,10 @@ public class ProductController {
 	 * @return createnewbook.html
 	 */
 	@GetMapping("create")
-	public String createProduct(Model model) {
+	public String createProduct(Model model, Authentication authentication) {
 		model.addAttribute("title", "Create a new Book");
-		model.addAttribute("purpose", "Create a New Book");
 		model.addAttribute("productModel", new ProductModel());
-		model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+		model.addAttribute("username", SessionLibrary.getUsername(authentication));
 		
 		return "createnewbook";
 	}
@@ -66,23 +63,25 @@ public class ProductController {
 	 * @return createnewbook.html if it failed, library.html if it succeeded
 	 */
 	@PostMapping("create")
-	public String createProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model) {
+	public String createProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model, Authentication authentication) {
 		
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute("title", "Create a new Book");
 			model.addAttribute("productModel", productModel);
-			
+			model.addAttribute("username", SessionLibrary.getUsername(authentication));
+
 			return "createnewbook";
 		}
 		
 		if (productService.getBookByIsbn(productModel.getIsbn()) != null)
 		{
-			System.out.println(String.format("Book with isbn %s already exists", productModel.getIsbn()));
 			model.addAttribute("title", "Create a new Book");
 			model.addAttribute("productModel", productModel);
-			bindingResult.rejectValue("isbn", "error.user", "ISBN already taken");
+			model.addAttribute("username", SessionLibrary.getUsername(authentication));
 			
+			bindingResult.rejectValue("isbn", "error.user", "ISBN already taken");
+
 			return "createnewbook";
 		}
 		
@@ -90,7 +89,7 @@ public class ProductController {
 
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
-		return getLibrary(model);
+		return "redirect:/library";
 	}
 	
 	/**
@@ -100,19 +99,20 @@ public class ProductController {
 	 * @return viewbook.html if it succeeded, error.html if it failed
 	 */
 	@GetMapping("view/{isbn}")
-	public String viewProduct(@PathVariable String isbn, Model model) {
+	public String viewProduct(@PathVariable String isbn, Model model, Authentication authentication) {
     	ProductModel book = productService.getBookByIsbn(isbn);
 
+		model.addAttribute("username", SessionLibrary.getUsername(authentication));
+		
     	if (book == null)
     	{
         	model.addAttribute("errorMessage", "Book not found");
         	
-        	return "error";  // Create an error.html page if not already existing
+        	return "error";
     	}
 
     	model.addAttribute("title", "View Book");
     	model.addAttribute("book", book);
-    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
     	
     	return "viewbook";
 	}
@@ -124,22 +124,23 @@ public class ProductController {
 	 * @return updatebook.html if it succeeded, error.html if it failed
 	 */
 	@GetMapping("update/{isbn}")
-	public String updateProductForm(@PathVariable("isbn") String isbn, Model model) {
+	public String updateProductForm(@PathVariable("isbn") String isbn, Model model, Authentication authentication) {
 
 		// taking product details
 		ProductModel productModel = productService.getBookByIsbn(isbn);
+		
+		model.addAttribute("username", SessionLibrary.getUsername(authentication));
 		if (productModel == null)
 		{
 			// if the product is not available
-			model.addAttribute("error", "Product not found");
+        	model.addAttribute("errorMessage", "Book not found");
 			
 			return "error";
 		}
 		model.addAttribute("title", "Update Book");
 		model.addAttribute("productModel", productModel);
-		model.addAttribute("username", !state.getUsername().isEmpty() ? state.getUsername() : null);
 		
-		return "updatebook"; // This should be the name of the HTML template for updating a product
+		return "updatebook";
 	}
 
 	/**
@@ -150,18 +151,20 @@ public class ProductController {
 	 * @return library.html if successful, updatebook.html if failed
 	 */
 	@PostMapping("update")
-	public String updateProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model)
+	public String updateProduct(@Valid ProductModel productModel, BindingResult bindingResult, Model model, Authentication authentication)
 	{
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute("title", "Update Book");
 			model.addAttribute("productModel", productModel);
+			model.addAttribute("username", SessionLibrary.getUsername(authentication));
+			
 			return "updatebook"; // Return to update form if validation errors exist
 		}
 
 		productService.updateProduct(productModel);
-		
-		return getLibrary(model);
+
+		return "redirect:/library";
 	}
 
 	/**
@@ -171,15 +174,16 @@ public class ProductController {
 	 * @return library.html if book not found, bookdelete.html if found
 	 */
 	@GetMapping("/delete/{isbn}")
-	public String showDeleteForm(@PathVariable String isbn, Model model)
+	public String showDeleteForm(@PathVariable String isbn, Model model, Authentication authentication)
 	{
 		ProductModel productModel = productService.getBookByIsbn(isbn);
-		if (productModel == null) {
-			return getLibrary(model);
-		}
+		if (productModel == null)
+			return "redirect:/library";
+		
 		model.addAttribute("title", "Delete Book");
 		model.addAttribute("productModel", productModel);
-    	model.addAttribute("username", state.getUsername().length() > 0 ? state.getUsername() : null);
+		model.addAttribute("username", SessionLibrary.getUsername(authentication));
+		
 		return "bookdelete";
 	}
 
@@ -190,10 +194,10 @@ public class ProductController {
 	 * @return library.html
 	 */
 	@PostMapping("/delete/{isbn}")
-	public String deleteProduct(@PathVariable String isbn, Model model) {
-
-//		ProductModel productModel = productService.getBookByIsbn(isbn);
+	public String deleteProduct(@PathVariable String isbn, Model model)
+	{
 		productService.deleteProduct(isbn);
-		return getLibrary(model);
+		
+		return "redirect:/library";
 	}
 }

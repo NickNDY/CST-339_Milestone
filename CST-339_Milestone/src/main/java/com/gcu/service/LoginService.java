@@ -25,6 +25,8 @@ public class LoginService implements UserDetailsService {
 	 */
 	public boolean checkCredentials(LoginModel loginModel)
 	{
+		System.out.println(String.format("Login attempted with username and password: %s, %s", loginModel.getUsername(), loginModel.getPassword()));
+		
 		UserEntity userEntity = new UserEntity();
 		userEntity = userRepository.findByUsernameIgnoreCase(loginModel.getUsername());
 
@@ -33,10 +35,15 @@ public class LoginService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println(String.format("Looking for user: %s", username));
+		
 		UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username);
 		if (userEntity == null) {
+			System.out.println(String.format("User not found: %s", username));
 			throw new UsernameNotFoundException("User not found");
 		}
+		
+		System.out.println(String.format("Found user: %s", username));
 
 		return org.springframework.security.core.userdetails.User.withUsername(userEntity.getUsername())
 				.password(userEntity.getPassword())

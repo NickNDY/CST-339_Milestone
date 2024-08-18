@@ -3,7 +3,7 @@
       layout:decorate="~{layouts/defaultTemplate}">
 
 <body>
-      <div layout:fragment="content" class="main-content-home" style="width: 75%;">
+      <div layout:fragment="content" class="main-content-home">
             <table class="table border">
                   <thead>
                         <tr class="author-table-header" scope="col">
@@ -22,7 +22,7 @@
                   </div>
 
                   <div class="mt-4">
-                        <form th:action="@{/library/delete/{isbn}(isbn=${productModel.isbn})}" method="post">
+                        <form class="form-default" th:action="@{/library/delete/{isbn}(isbn=${productModel.isbn})}" method="post">
                               <button type="submit" class="btn btn-danger">Confirm Delete</button>
                               <a th:href="@{/library}" class="btn btn-secondary">Cancel</a>
                         </form>

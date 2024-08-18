@@ -17,6 +17,9 @@ public class RegistrationDataService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private PasswordEncoder encoder;
 
     /**
      * Creates a new user in the persistent data store.
@@ -33,7 +36,7 @@ public class RegistrationDataService {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setUsername(registrationModel.getUsername());
-        userEntity.setPassword(registrationModel.getPassword()); 
+        userEntity.setPassword(encoder.encode(registrationModel.getPassword())); 
         userEntity.setFirstname(registrationModel.getFirstname());
         userEntity.setLastname(registrationModel.getLastname());
         userEntity.setEmail(registrationModel.getEmail());

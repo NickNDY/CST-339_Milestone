@@ -92,8 +92,8 @@ public class ProductService {
 	 * Deletes an existing product.
 	 * @param productModel The product model to delete
 	 */
-      public void deleteProduct(ProductModel productModel) {
-            ProductEntity productEntity = repository.findByIsbn(productModel.getIsbn());
+      public void deleteProduct(String isbn) {
+            ProductEntity productEntity = repository.findByIsbn(isbn);
 		if (productEntity != null) {
 			repository.delete(productEntity);
 		}

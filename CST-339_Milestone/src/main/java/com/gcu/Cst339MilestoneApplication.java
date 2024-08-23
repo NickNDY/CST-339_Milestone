@@ -8,8 +8,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({ "com.gcu" })
 public class Cst339MilestoneApplication {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Cst339MilestoneApplication.class, args);
+		
 	}
 
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
+	<body>
+		<div layout:fragment="content" class="main-content-home">
+			<h2 th:if="${failurecount} == 0" style="color: greenyellow">All Tests Passed</h2>
+			<h2 th:if="${failurecount} > 0" th:text="'Failures = ' + ${failurecount}" style="color: red">Not All Tests Passed</h2>
+			<table class="table" style="background-color: greenyellow;">
+				<thead>
+					<tr>
+						<th scope="col">Passing Tests</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pass : ${passes}">
+						<td th:text="${pass}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<table th:if="${!fails.isEmpty()}" class="table" style="background-color: orangered;">
+				<thead>
+					<tr>
+						<th scope="col">Failing Tests</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="fail : ${fails}">
+						<td th:text="${fail}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

@@ -1,10 +1,5 @@
 package com.gcu.controller;
 
-import com.gcu.model.ProductModel;
-import com.gcu.service.ProductService;
-import com.gcu.utils.SessionLibrary;
-
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.gcu.model.ProductModel;
+import com.gcu.service.ProductService;
+import com.gcu.utils.SessionLibrary;
+
+import jakarta.validation.Valid;
 
 
 
@@ -89,7 +90,7 @@ public class ProductController {
 
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
-		return "redirect:/library";
+		return "redirect:/Service/library";
 	}
 	
 	/**
@@ -164,7 +165,7 @@ public class ProductController {
 
 		productService.updateProduct(productModel);
 
-		return "redirect:/library";
+		return "redirect:/Service/library";
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class ProductController {
 	{
 		ProductModel productModel = productService.getBookByIsbn(isbn);
 		if (productModel == null)
-			return "redirect:/library";
+			return "redirect:/Service/library";
 		
 		model.addAttribute("title", "Delete Book");
 		model.addAttribute("productModel", productModel);
@@ -198,6 +199,6 @@ public class ProductController {
 	{
 		productService.deleteProduct(isbn);
 		
-		return "redirect:/library";
+		return "redirect:/Service/library";
 	}
 }

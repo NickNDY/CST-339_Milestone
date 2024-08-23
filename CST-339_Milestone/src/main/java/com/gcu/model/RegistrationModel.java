@@ -58,7 +58,7 @@ public class RegistrationModel {
 			@NotNull(message = "Email is a required field") @Size(min = 3, max = 32, message = "Email must be between 3 and 32 characters") @Email String email,
 			@NotNull(message = "Phone number is a required field") @Size(min = 7, max = 14, message = "Phone number must be between 7 and 14 characters") @Digits(integer = 14, fraction = 0, message = "Phone number must consist of no more than 14 digits") String phone,
 			@NotNull(message = "User name is a required field") @Size(min = 3, max = 32, message = "User name must be between 3 and 32 characters") String username,
-			@NotNull(message = "Password is a required field") @Size(min = 3, max = 32, message = "User name must be between 3 and 32 characters") String password,
+			@NotNull(message = "Password is a required field") @Size(min = 3, max = 32, message = "Password must be between 3 and 32 characters") String password,
 			@NotNull(message = "Address is a required field") @Size(min = 4, max = 128, message = "Address must be between 4 and 128 characters") String address,
 			@NotNull(message = "City is a required field") @Size(min = 2, max = 32, message = "City must be between 2 and 32 characters") String city,
 			@NotNull(message = "State is a required field") @Size(min = 2, max = 32, message = "State must be between 2 and 32 characters") String state,

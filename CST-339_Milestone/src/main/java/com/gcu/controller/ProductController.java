@@ -90,7 +90,7 @@ public class ProductController {
 
 		// Perhaps we can highlight the added book in the library later
 		// model.addAttribute("bookName", productModel.getBookName());
-		return "redirect:/Service/library";
+		return "redirect:/library";
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class ProductController {
 
 		productService.updateProduct(productModel);
 
-		return "redirect:/Service/library";
+		return "redirect:/library";
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class ProductController {
 	{
 		ProductModel productModel = productService.getBookByIsbn(isbn);
 		if (productModel == null)
-			return "redirect:/Service/library";
+			return "redirect:/library";
 		
 		model.addAttribute("title", "Delete Book");
 		model.addAttribute("productModel", productModel);
@@ -199,6 +199,6 @@ public class ProductController {
 	{
 		productService.deleteProduct(isbn);
 		
-		return "redirect:/Service/library";
+		return "redirect:/library";
 	}
 }

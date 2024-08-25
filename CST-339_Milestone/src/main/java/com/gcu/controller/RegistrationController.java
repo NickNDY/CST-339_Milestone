@@ -89,6 +89,6 @@ public class RegistrationController {
             return "register";
         }
 		
-		return "redirect:/Service/login";
+		return "redirect:/login";
 	}
 }

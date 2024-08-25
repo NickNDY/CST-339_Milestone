@@ -27,7 +27,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/Service/**").authenticated()
+                        .requestMatchers("/library/**", "/service/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
@@ -35,7 +35,7 @@ public class SecurityConfig {
         				.usernameParameter("username")
         				.passwordParameter("password")
                         .permitAll()
-        				.defaultSuccessUrl("/Service/library", true) // Define URL to navigate to upon successful login
+        				.defaultSuccessUrl("/library", true) // Define URL to navigate to upon successful login
                 )
         		.logout(logout -> logout
         				.logoutUrl("/logout") // Define logout path

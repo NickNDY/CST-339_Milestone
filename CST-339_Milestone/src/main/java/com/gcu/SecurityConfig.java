@@ -14,6 +14,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.gcu.service.LoginService;
 
+
+
+/**
+ * Security configuration class for the application.
+ * Configures authentication and authorization settings.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -23,6 +29,15 @@ public class SecurityConfig {
 
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+
+    /**
+     * Configures the security filter chain, defining which requests require authentication and
+     * specifying login, logout, and basic HTTP authentication settings.
+     *
+     * @param http the {@link HttpSecurity} to modify
+     * @return the {@link SecurityFilterChain} object
+     * @throws Exception if an error occurs while configuring the security chain
+     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -49,6 +64,15 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    /**
+     * Configures the {@link AuthenticationManager} to use the {@link LoginService} for user authentication
+     * and the {@link PasswordEncoder} for password encoding.
+     *
+     * @param http the {@link HttpSecurity} to modify
+     * @return the configured {@link AuthenticationManager} object
+     * @throws Exception if an error occurs while configuring the authentication manager
+     */
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -58,6 +82,12 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
+
+    /**
+     * Creates a {@link PasswordEncoder} bean that uses the {@link BCryptPasswordEncoder}.
+     *
+     * @return the {@link PasswordEncoder} bean
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return passwordEncoder;
